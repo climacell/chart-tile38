@@ -19,7 +19,7 @@ spec:
           - 'echo "AOFSHRINK" | tile38-cli -h {{ template "tile38.fullname" . }}-leader.{{.Release.Namespace}}.svc.cluster.local -p {{ .Values.service.port }}'
           restartPolicy: OnFailure
           resources:
-          {{ toYaml .Values.aofshrink_job.resources | indent 12 }}
+          {{ toYaml .Values.aofshrink_job.resources | indent 6 }}
               {{- with .Values.aofshrink_job.nodeSelector }}
                 nodeSelector:
           {{ toYaml . | indent 8 }}
