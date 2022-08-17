@@ -11,8 +11,6 @@ metadata:
 data:
   config: |
     {
-            "follow_host": "{{ template "tile38.fullname" . }}-leader.{{.Release.Namespace}}.svc.cluster.local",
-            "follow_port": {{ .Values.service.port }}
             "logconfig": {
                 "level": "info",
                 "encoding": "json",

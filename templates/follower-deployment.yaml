@@ -33,15 +33,6 @@ spec:
         - name: ping-leader
           image: busybox
           command: ["wget", "{{ template "tile38.fullname" .}}-leader:{{.Values.service.port}}/ping"]
-        - name: load-config
-          image: busybox
-          command: ["cp", "/config/config", "/data/config"]
-          volumeMounts:
-            - name: data
-              mountPath: "{{ .Values.follower.persistentVolume.mountPath }}"
-              subPath: "{{ .Values.follower.persistentVolume.subPath }}"
-            - name: config
-              mountPath: /config
       containers:
         - name: {{ .Chart.Name }}-follower
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -50,6 +41,7 @@ spec:
           args:
             - "-d"
             - "/data"
+            - "-l json"
             {{- if .Values.follower.prometheus.enabled }}
             - "--metrics-addr={{ .Values.follower.prometheus.listenAddr }}:{{ .Values.follower.prometheus.port }}"
             {{- end }}
@@ -62,7 +54,20 @@ spec:
               containerPort: {{ .Values.follower.prometheus.port }}
               protocol: TCP           
             {{- end }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /HEALTHZ
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
           volumeMounts:
+            - name: config
+              mountPath: /config
             - name: data
               mountPath: "{{ .Values.follower.persistentVolume.mountPath }}"
               subPath: "{{ .Values.follower.persistentVolume.subPath }}"

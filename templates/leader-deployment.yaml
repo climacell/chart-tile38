@@ -33,13 +33,16 @@ spec:
         - name: {{ .Chart.Name }}-leader
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["tile38-server"]
+          command: ["/bin/sh"]
           args:
-            - "-d"
-            - "/data"
+            - "-c"
+            - "cp /config/config /data/config && "
+            - "tile38-server"
+            - " --metrics-addr=:4321"
             {{- if .Values.leader.prometheus.enabled }}
             - "--metrics-addr={{ .Values.leader.prometheus.listenAddr }}:{{ .Values.leader.prometheus.port }}"
             {{- end }}
+            - "-d /data -l json;"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -50,13 +53,21 @@ spec:
               protocol: TCP           
             {{- end }}
           volumeMounts:
+            - name: config
+              mountPath: /config
             - name: data
               mountPath: "{{ .Values.leader.persistentVolume.mountPath }}"
               subPath: "{{ .Values.leader.persistentVolume.subPath }}"
-          readinessProbe:
+          livenessProbe:
             tcpSocket:
               port: {{ .Values.service.port }}
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /HEALTHZ
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 30
             periodSeconds: 10
           resources:
 {{ toYaml .Values.leader.resources | indent 12 }}
@@ -73,6 +84,9 @@ spec:
 {{ toYaml . | indent 8 }}
     {{- end }}
       volumes:
+        - name: config
+          configMap:
+            name: {{ template "tile38.fullname" . }}-leader
         - name: data
         {{- if .Values.leader.persistentVolume.enabled }}
           persistentVolumeClaim:

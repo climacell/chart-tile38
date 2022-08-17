@@ -41,15 +41,7 @@ follower:
   tolerations: []
   affinity: {}
   persistentVolume:
-    enabled: true
-    accessModes:
-      - ReadWriteOnce
-    annotations: {}
-    existingClaim: ""
-    mountPath: /data
-    size: 2Gi
-    # storageClass: ""
-    subPath: ""
+    enabled: false
   prometheus:
     enabled: true
     port: 4321
