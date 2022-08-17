@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: {{ template "tile38.fullname" . }}-aofshrink
 spec:
-  schedule: ".Values.aofshrink_job.schedule"
+  schedule: "{{ .Values.aofshrink_job.schedule }}"
   jobTemplate:
     spec:
       template:
