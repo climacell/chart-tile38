@@ -62,6 +62,6 @@ aofshrink_job:
   schedule: "0,30 * * * *"
   resources: {}
   nodeSelector: {}
-  tolerations: []
   affinity: {}
-
+  tolerations: []
+  
