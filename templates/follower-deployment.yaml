@@ -50,7 +50,8 @@ spec:
           args:
             - "-d"
             - "/data"
-            - "-l json"
+            - "-l"
+            - "json"
             {{- if .Values.follower.prometheus.enabled }}
             - "--metrics-addr={{ .Values.follower.prometheus.listenAddr }}:{{ .Values.follower.prometheus.port }}"
             {{- end }}
