@@ -29,20 +29,31 @@ spec:
         release: {{ .Release.Name }}
         role: leader
     spec:
+      initContainers:
+        - name: ping-leader
+          image: busybox
+          command: ["wget", "{{ template "tile38.fullname" .}}-leader:{{.Values.service.port}}/healthz"]
+        - name: load-config
+          image: busybox
+          command: ["cp", "/config/config", "/data/config"]
+          volumeMounts:
+            - name: data
+              mountPath: "{{ .Values.follower.persistentVolume.mountPath }}"
+              subPath: "{{ .Values.follower.persistentVolume.subPath }}"
+            - name: config
+              mountPath: /config
       containers:
         - name: {{ .Chart.Name }}-leader
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/bin/sh"]
+          command: ["tile38-server"]
           args:
-            - "-c"
-            - "cp /config/config {{ .Values.leader.persistentVolume.mountPath }}/config"
-            - "&& tile38-server"
+            - "-d"
+            - "/data"
+            - "-l json"
             {{- if .Values.leader.prometheus.enabled }}
             - "--metrics-addr={{ .Values.leader.prometheus.listenAddr }}:{{ .Values.leader.prometheus.port }}"
             {{- end }}
-            - "-d {{ .Values.leader.persistentVolume.mountPath }}"
-            - "-l json;"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -53,8 +64,6 @@ spec:
               protocol: TCP           
             {{- end }}
           volumeMounts:
-            - name: config
-              mountPath: /config
             - name: data
               mountPath: "{{ .Values.leader.persistentVolume.mountPath }}"
               subPath: "{{ .Values.leader.persistentVolume.subPath }}"
