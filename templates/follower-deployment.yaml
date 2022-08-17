@@ -21,7 +21,7 @@ spec:
         {{- if .Values.leader.prometheus.datadog.enabled }}
         ad.datadoghq.com/{{ .Chart.Name }}-follower.check_names: '["openmetrics"]'
         ad.datadoghq.com/{{ .Chart.Name }}-follower.init_configs: '[{}]'
-        ad.datadoghq.com/{{ .Chart.Name }}-follower.instances: [{"openmetrics_endpoint": "http://%%host%%:%%port_metrics%%/metrics"}]
+        ad.datadoghq.com/{{ .Chart.Name }}-follower.instances: '[{"openmetrics_endpoint": "http://%%host%%:%%port_metrics%%/metrics"}]'
         ad.datadoghq.com/tolerate-unready: "true"
         {{- end}}
       labels:
