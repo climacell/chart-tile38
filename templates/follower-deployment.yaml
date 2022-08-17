@@ -32,7 +32,7 @@ spec:
       initContainers:
         - name: ping-leader
           image: busybox
-          command: ["wget", "{{ template "tile38.fullname" .}}-leader:{{.Values.service.port}}/ping"]
+          command: ["wget", "{{ template "tile38.fullname" .}}-leader:{{.Values.service.port}}/healthz"]
       containers:
         - name: {{ .Chart.Name }}-follower
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -40,7 +40,7 @@ spec:
           command: ["tile38-server"]
           args:
             - "-d"
-            - "/data"
+            - "{{ .Values.follower.persistentVolume.mountPath }}"
             - "-l json"
             {{- if .Values.follower.prometheus.enabled }}
             - "--metrics-addr={{ .Values.follower.prometheus.listenAddr }}:{{ .Values.follower.prometheus.port }}"

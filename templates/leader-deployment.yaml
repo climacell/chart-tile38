@@ -36,13 +36,12 @@ spec:
           command: ["/bin/sh"]
           args:
             - "-c"
-            - "cp /config/config /data/config && "
+            - "cp /config/config {{ .Values.leader.persistentVolume.mountPath }}/config && "
             - "tile38-server"
-            - " --metrics-addr=:4321"
             {{- if .Values.leader.prometheus.enabled }}
             - "--metrics-addr={{ .Values.leader.prometheus.listenAddr }}:{{ .Values.leader.prometheus.port }}"
             {{- end }}
-            - "-d /data -l json;"
+            - "-d {{ .Values.leader.persistentVolume.mountPath }} -l json;"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
