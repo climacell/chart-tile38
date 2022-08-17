@@ -21,7 +21,7 @@ spec:
         {{- if .Values.leader.prometheus.datadog.enabled }}
         ad.datadoghq.com/{{ .Chart.Name }}-leader.check_names: '["openmetrics"]'
         ad.datadoghq.com/{{ .Chart.Name }}-leader.init_configs: '[{}]'
-        ad.datadoghq.com/{{ .Chart.Name }}-leader.instances: '[{"openmetrics_endpoint": "http://%%host%%:%%port_metrics%%/metrics"}]'
+        ad.datadoghq.com/{{ .Chart.Name }}-leader.instances: '[{"namespace": "tile38", "openmetrics_endpoint": "http://%%host%%:%%port_metrics%%/metrics", "metrics": ["tile38.*"]}]'
         ad.datadoghq.com/tolerate-unready: "true"
         {{- end }}
       labels:
