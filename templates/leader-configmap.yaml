@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "tile38.fullname" . }}-follower
+  name: {{ template "tile38.fullname" . }}-leader
   labels:
     app: {{ template "tile38.name" . }}
     chart: {{ template "tile38.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    role: follower
+    role: leader
 data:
   config: |
     {
