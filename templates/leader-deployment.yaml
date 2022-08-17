@@ -38,8 +38,8 @@ spec:
           command: ["cp", "/config/config", "/data/config"]
           volumeMounts:
             - name: data
-              mountPath: "{{ .Values.follower.persistentVolume.mountPath }}"
-              subPath: "{{ .Values.follower.persistentVolume.subPath }}"
+              mountPath: /data
+              subPath: "{{ .Values.leader.persistentVolume.subPath }}"
             - name: config
               mountPath: /config
       containers:
