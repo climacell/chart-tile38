@@ -45,7 +45,7 @@ follower:
   tolerations: []
   affinity: {}
   persistentVolume:
-    enabled: true
+    enabled: false
     mountPath: /data
   prometheus:
     enabled: true
