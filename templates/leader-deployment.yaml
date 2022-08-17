@@ -21,6 +21,13 @@ spec:
         app: {{ template "tile38.name" . }}
         release: {{ .Release.Name }}
         role: leader
+      annotations:
+        {{- if .Values.leader.prometheus.datadog.enabled }}
+        ad.datadoghq.com/{{ .Chart.Name }}-leader.check_names: '["openmetrics"]'
+        ad.datadoghq.com/{{ .Chart.Name }}-leader.init_configs: '[{}]'
+        ad.datadoghq.com/{{ .Chart.Name }}-leader.instances: [{"openmetrics_endpoint": "http://%%host%%:%%port_metrics%%/metrics"}]
+        ad.datadoghq.com/tolerate-unready: "true"
+        {{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}-leader

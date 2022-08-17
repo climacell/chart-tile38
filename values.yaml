@@ -31,6 +31,8 @@ leader:
     enabled: true
     port: 4321
     listenAddr: 0.0.0.0
+    datadog:
+      enabled: true
 
 follower:
   replicaCount: 1
@@ -52,3 +54,5 @@ follower:
     enabled: true
     port: 4321
     listenAddr: 0.0.0.0
+    datadog:
+      enabled: true
