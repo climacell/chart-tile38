@@ -9,6 +9,7 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: OnFailure
           containers:
               - name: {{ .Chart.Name }}-aofshrink
                 image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -17,7 +18,6 @@ spec:
                 - /bin/sh
                 - -c
                 - 'echo "AOFSHRINK" | tile38-cli -h {{ template "tile38.fullname" . }}-leader.{{.Release.Namespace}}.svc.cluster.local -p {{ .Values.service.port }}'
-                restartPolicy: OnFailure
           resources:
           {{ toYaml .Values.aofshrink_job.resources | indent 6 }}
               {{- with .Values.aofshrink_job.nodeSelector }}
