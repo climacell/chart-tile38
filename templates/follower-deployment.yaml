@@ -39,10 +39,22 @@ spec:
         - name: {{ .Chart.Name }}-follower
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["tile38-server"]
+          args:
+            - "-d"
+            - "/data"
+            {{- if .Values.follower.prometheus.enabled }}
+            - "--metrics-addr={{ .Values.follower.prometheus.listenAddr }}:{{ .Values.follower.prometheus.port }}"
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+            {{- if .Values.follower.prometheus.enabled }}
+            - name: metrics
+              containerPort: {{ .Values.follower.prometheus.port }}
+              protocol: TCP           
+            {{- end }}
           volumeMounts:
             - name: data
               mountPath: "{{ .Values.follower.persistentVolume.mountPath }}"
