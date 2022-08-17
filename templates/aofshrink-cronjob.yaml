@@ -18,9 +18,9 @@ spec:
                 - /bin/sh
                 - -c
                 - 'echo "AOFSHRINK" | tile38-cli -h {{ template "tile38.fullname" . }}-leader.{{.Release.Namespace}}.svc.cluster.local -p {{ .Values.service.port }}'
-          resources:
-          {{ toYaml .Values.aofshrink_job.resources | indent 6 }}
-          {{- with .Values.aofshrink_job.nodeSelector }}
+                resources:
+                {{ toYaml .Values.aofshrink_job.resources | indent 6 }}
+                {{- with .Values.aofshrink_job.nodeSelector }}
           nodeSelector:
           {{ toYaml . | indent 8 }}
           {{- end }}
