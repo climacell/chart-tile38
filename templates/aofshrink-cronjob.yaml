@@ -20,16 +20,16 @@ spec:
                 - 'echo "AOFSHRINK" | tile38-cli -h {{ template "tile38.fullname" . }}-leader.{{.Release.Namespace}}.svc.cluster.local -p {{ .Values.service.port }}'
           resources:
           {{ toYaml .Values.aofshrink_job.resources | indent 6 }}
-              {{- with .Values.aofshrink_job.nodeSelector }}
-                nodeSelector:
+          {{- with .Values.aofshrink_job.nodeSelector }}
+          nodeSelector:
           {{ toYaml . | indent 8 }}
-              {{- end }}
-              {{- with .Values.aofshrink_job.affinity }}
-                affinity:
+          {{- end }}
+          {{- with .Values.aofshrink_job.affinity }}
+          affinity:
           {{ toYaml . | indent 8 }}
-              {{- end }}
-              {{- with .Values.aofshrink_job.tolerations }}
-                tolerations:
+          {{- end }}
+          {{- with .Values.aofshrink_job.tolerations }}
+          tolerations:
           {{ toYaml . | indent 8 }}
-              {{- end }}
+          {{- end }}
 {{- end }}
