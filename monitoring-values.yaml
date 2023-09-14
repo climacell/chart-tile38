@@ -1,4 +1,4 @@
-# Default values for tile38.
+# Values for tile38-monitoring.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -16,7 +16,13 @@ serviceAccount:
 
 leader:
   replicaCount: 1
-  resources: {}
+  resources:
+    limits:
+      cpu: 4
+      memory: 12G
+    requests:
+      cpu: 3
+      memory: 9G
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -30,26 +36,6 @@ leader:
     size: 2Gi
     # storageClass: ""
     subPath: ""
-  prometheus:
-    enabled: true
-    port: 4321
-    listenAddr: 0.0.0.0
-    datadog:
-      enabled: true
-
-follower:
-  replicaCount: 1
-  resources:
-    requests:
-      ephemeral-storage: 2Gi
-    limits:
-      ephemeral-storage: 2Gi
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-  persistentVolume:
-    enabled: false
-    mountPath: /data
   prometheus:
     enabled: true
     port: 4321
