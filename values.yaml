@@ -36,6 +36,13 @@ leader:
     listenAddr: 0.0.0.0
     datadog:
       enabled: true
+  resources:
+    limits:
+      cpu: 4
+      memory: 12G
+    requests:
+      cpu: 3
+      memory: 9G
 
 follower:
   replicaCount: 1
