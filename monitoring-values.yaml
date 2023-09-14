@@ -1,0 +1,55 @@
+# Values for tile38-monitoring.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: tile38/tile38
+  tag: 1.29.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 9851
+
+serviceAccount:
+  enabled: true
+  email: monitoring-tile38@climacell-platform-production.iam.gserviceaccount.com
+  name: monitoring-tile38-ksa
+
+leader:
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 4
+      memory: 12G
+    requests:
+      cpu: 3
+      memory: 9G
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  persistentVolume:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    existingClaim: ""
+    mountPath: /data
+    size: 2Gi
+    # storageClass: ""
+    subPath: ""
+  prometheus:
+    enabled: true
+    port: 4321
+    listenAddr: 0.0.0.0
+    datadog:
+      enabled: true
+
+aofshrink_job:
+  enabled: true
+  schedule: "0,30 * * * *"
+  resources: {}
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+  
