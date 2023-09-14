@@ -8,11 +8,13 @@ image:
   pullPolicy: IfNotPresent
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 9851
 
 serviceAccount:
-  enabled: false
+  enabled: true
+  email: monitoring-tile38@climacell-platform-production.iam.gserviceaccount.com
+  name: monitoring-tile38-ksa
 
 leader:
   replicaCount: 1
