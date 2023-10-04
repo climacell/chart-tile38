@@ -35,7 +35,7 @@ leader:
     annotations: {}
     existingClaim: ""
     mountPath: /data
-    size: 2Gi
+    size: 200Gi
     # storageClass: ""
     subPath: ""
   prometheus:
