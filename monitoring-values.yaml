@@ -47,7 +47,7 @@ leader:
 
 aofshrink_job:
   enabled: true
-  schedule: "0,30 * * * *"
+  schedule: "0,5 * * * *"
   resources: {}
   nodeSelector: {}
   affinity: {}
